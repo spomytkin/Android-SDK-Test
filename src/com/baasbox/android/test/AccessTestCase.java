@@ -13,7 +13,7 @@ public class AccessTestCase extends BAASBoxTestCase {
 	private static final String USER_EMAIL_JSON = "{'username':'davide','password':'pass','visibleByTheUser':{'email':'a@b.com'},'visibleByFriend':{},'visibleByRegisteredUsers':{},'visibleByAnonymousUsers':{}}";
 
 	public void testSignup() throws Throwable {
-		BAASBoxResult<Void> result = box.signup("davide", "pass");		
+		BAASBoxResult<String> result = box.signup("davide", "pass");		
 		assertNotNull(result);
 		
 		try {
@@ -25,7 +25,7 @@ public class AccessTestCase extends BAASBoxTestCase {
 	}
 	
 	public void testSignupWithUser() throws Throwable {
-		BAASBoxResult<Void> result = box.signup(new JSONObject(USER_JSON));		
+		BAASBoxResult<String> result = box.signup(new JSONObject(USER_JSON));		
 		assertNotNull(result);
 		
 		try {
@@ -39,7 +39,7 @@ public class AccessTestCase extends BAASBoxTestCase {
 	public void testLoginSuccess() throws Throwable {
 		box.signup("davide", "pass").get();
 		
-		BAASBoxResult<Void> result = box.login("davide", "pass");
+		BAASBoxResult<String> result = box.login("davide", "pass");
 		assertNotNull(result);
 		
 		try {
@@ -55,7 +55,7 @@ public class AccessTestCase extends BAASBoxTestCase {
 	}
 	
 	public void testLoginFailure() throws Throwable {		
-		BAASBoxResult<Void> result = box.login("davide", "1234");
+		BAASBoxResult<String> result = box.login("davide", "1234");
 		assertNotNull(result);
 		
 		try {
@@ -125,11 +125,11 @@ public class AccessTestCase extends BAASBoxTestCase {
 			assertEquals(401, e.httpStatus);
 		}
 		
-		result = box.login("davide", "pass1");
-		assertNotNull(result);
+		BAASBoxResult<String> result2 = box.login("davide", "pass1");
+		assertNotNull(result2);
 		
 		try {
-			result.get();
+			result2.get();
 		} catch (BAASBoxException e) {
 			fail("Unexpected BAASBoxException: " + e);
 		}
